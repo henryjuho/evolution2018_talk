@@ -1,14 +1,17 @@
 ---
-title: "Insertions and deletions in the great tit genome"
+title: "Infering the selective pressures acting on insertions and deletions in the great tit genome"
 author: "Henry Barton"
-date: ' 01/05/18'
+date: ' 22/08/18'
+institute: 'The University of Sheffield'
 output:
+  beamer_presentation:
+    fig_caption: no
   ioslides_presentation:
     fig_caption: no
     fig_height: 5
     fig_width: 9
-  beamer_presentation: default
   slidy_presentation: default
+classoption: aspectratio=169
 ---
 <style type="text/css">
 slides > slide:not(.nobackground):after {
@@ -17,7 +20,7 @@ slides > slide:not(.nobackground):after {
 </style>
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE, dev.args = list(bg = 'transparent'))
+knitr::opts_chunk$set(echo = FALSE, dev.args = list(bg = 'transparent'), dev='pdf')
 ```
 
 ```{r, echo=FALSE, warning=FALSE, include=FALSE}
@@ -27,6 +30,7 @@ knitr::opts_chunk$set(echo = FALSE, dev.args = list(bg = 'transparent'))
 library('ggplot2')
 library('gridExtra')
 library('dplyr')
+plot_base_size = 30
 
 ```
 
@@ -63,6 +67,9 @@ library('dplyr')
 * Influence genome size:
     * low deletion rate $\rightarrow$ large genomes?
     * high deletion rate $\rightarrow$ compact genomes?
+    * selection on insertions to maintain minimum intron size?
+  
+* Contribute more to sequence divergence, in terms of the number of base differences, than SNPs  
 
 
 \   
@@ -70,39 +77,30 @@ library('dplyr')
 \  
 \  
 
-<div style="position:absolute;bottom:4%;left:5%;width:900px;font-size:11pt;"> (Leushkin and Bazykin, 2013; Nam and Ellegren, 2012; Ometto et al., 2005; Sun et al., 2012) </div>
+<div style="position:absolute;bottom:4%;left:5%;width:900px;font-size:11pt;"> (Britten, 2002; Leushkin and Bazykin, 2013; Nam and Ellegren, 2012; Ometto et al., 2005; Sun et al., 2012) </div>
 
-
-## The importance of INDELs in genome evolution
-
-* Influence genome size:
-    * low deletion rate $\rightarrow$ large genomes?
-    * high deletion rate $\rightarrow$ compact genomes?
-
-
-\   
-\  
-\  
-\  
-
-<div style="position:absolute;bottom:4%;left:5%;width:900px;font-size:11pt;"> (Leushkin and Bazykin, 2013; Nam and Ellegren, 2012; Ometto et al., 2005; Sun et al., 2012) </div>
 
 ## INDEL mutation
 
-
+  * Deletion bias in most organisms
+  * Polymerase slippage can explain majority of short INDEL events
+  
 ## INDEL selection
 
 * Deletions
-    *
+    * lower mean allele frequency 
+    * more deleterious
+    * two breakpoints
   
 * Insertions may be favoured:
+    * elevated fixation probability
     * biased gene conversion
     * minimum intron size
     * polarisation error
     
 ## Importance of polarisation error
 
-```{R, echo=FALSE, warning=FALSE}
+```{R, echo=FALSE, warning=FALSE, fig.width=16, fig.height=9}
 # data const
 true_ins = data.frame(c(0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9), c(8, 4, 3, 2.5, 2, 1.8, 1.6, 1.5, 1.4))
 colnames(true_ins) <- c('freq', 'prop')
@@ -137,7 +135,7 @@ true_indel = rbind(true_del, true_ins, error_ins_1, error_ins_2, error_del_1, er
 ggplot(true_indel, aes(x=as.factor(freq), y=prop, fill=group)) + 
   geom_bar(stat='identity') +
   facet_wrap(~var) +
-  theme_bw(base_size = 15) +
+  theme_bw(base_size=plot_base_size) +
   xlab('Frequency of derived allele') + ylab('INDEL count') +
   scale_fill_manual(values=c('white', 'dark grey', 'white', 'dark grey', 'dark grey'), guide='none')
 
@@ -148,11 +146,11 @@ ggplot(true_indel, aes(x=as.factor(freq), y=prop, fill=group)) +
 
 ## Importance of polarisation error
 
-```{R, echo=FALSE, warning=FALSE}
+```{R, echo=FALSE, warning=FALSE, fig.width=16, fig.height=9}
 ggplot(true_indel, aes(x=as.factor(freq), y=prop, fill=group)) + 
   geom_bar(stat='identity') +
   facet_wrap(~var) +
-  theme_bw(base_size = 15) +
+  theme_bw(base_size=plot_base_size) +
   xlab('Frequency of derived allele') + ylab('INDEL count') +
   scale_fill_manual(values=c('white', 'dark grey', 'white', 'steel blue', 'dark grey'), guide='none')
 
@@ -163,11 +161,11 @@ ggplot(true_indel, aes(x=as.factor(freq), y=prop, fill=group)) +
 
 ## Importance of polarisation error
 
-```{R, echo=FALSE, warning=FALSE}
+```{R, echo=FALSE, warning=FALSE, fig.width=16, fig.height=9}
 ggplot(true_indel, aes(x=as.factor(freq), y=prop, fill=group)) + 
   geom_bar(stat='identity') +
   facet_wrap(~var) +
-  theme_bw(base_size = 15) +
+  theme_bw(base_size=plot_base_size) +
   xlab('Frequency of derived allele') + ylab('INDEL count') +
   scale_fill_manual(values=c('steel blue', 'dark grey', 'white', 'white', 'dark grey'), guide='none')
 
@@ -178,11 +176,11 @@ ggplot(true_indel, aes(x=as.factor(freq), y=prop, fill=group)) +
 
 ## Importance of polarisation error
 
-```{R, echo=FALSE, warning=FALSE}
+```{R, echo=FALSE, warning=FALSE, fig.width=16, fig.height=9}
 ggplot(true_indel, aes(x=as.factor(freq), y=prop, fill=group)) + 
   geom_bar(stat='identity') +
   facet_wrap(~var) +
-  theme_bw(base_size = 15) +
+  theme_bw(base_size=plot_base_size) +
   xlab('Frequency of derived allele') + ylab('INDEL count') +
   scale_fill_manual(values=c('steel blue', 'tomato 3', 'white', 'white', 'dark grey'), guide='none')
 
@@ -193,11 +191,11 @@ ggplot(true_indel, aes(x=as.factor(freq), y=prop, fill=group)) +
 
 ## Importance of polarisation error
 
-```{R, echo=FALSE, warning=FALSE}
+```{R, echo=FALSE, warning=FALSE, fig.width=16, fig.height=9}
 ggplot(true_indel, aes(x=as.factor(freq), y=prop, fill=group)) + 
   geom_bar(stat='identity') +
   facet_wrap(~var) +
-  theme_bw(base_size = 15) +
+  theme_bw(base_size=plot_base_size) +
   xlab('Frequency of derived allele') + ylab('INDEL count') +
   scale_fill_manual(values=c('steel blue', 'white', 'tomato 3', 'white', 'dark grey'), guide='none')
 
@@ -208,11 +206,11 @@ ggplot(true_indel, aes(x=as.factor(freq), y=prop, fill=group)) +
 
 ## Importance of polarisation error
 
-```{R, echo=FALSE, warning=FALSE}
+```{R, echo=FALSE, warning=FALSE, fig.width=16, fig.height=9}
 ggplot(true_indel, aes(x=as.factor(freq), y=prop, fill=group)) + 
   geom_bar(stat='identity') +
   facet_wrap(~var) +
-  theme_bw(base_size = 15) +
+  theme_bw(base_size=plot_base_size) +
   xlab('Frequency of derived allele') + ylab('INDEL count') +
   scale_fill_manual(values=c('dark grey', 'white', 'dark grey', 'white', 'dark grey'), guide='none')
 
@@ -221,10 +219,12 @@ ggplot(true_indel, aes(x=as.factor(freq), y=prop, fill=group)) +
 
 <div style="position:absolute;bottom:4%;left:5%;width:900px;font-size:11pt;"> (see Hernandez et al., 2007) </div>
 
-## Aims - make more specific
+## Aims
 
-1) Quanitfy the selective and mutational pressures acting on INDELs in great tits (*Parus major*)
-2) Investigate how these pressures vary in different genomic contexts, ie coding, non-coding, recombination rate.
+Quantify how natural selection shapes INDEL diversity in the great tit (*Parus major*)
+
+1) within coding regions
+2) in non-coding regions
 
 ![tit](tit_2.png)
 
@@ -238,7 +238,7 @@ ggplot(true_indel, aes(x=as.factor(freq), y=prop, fill=group)) +
 \  
 \ 
 
-![chroms](c.png)
+![chroms](ncbi_chromosomes.png)
 
 <div style="position:absolute;bottom:4%;left:5%;width:450px;font-size:11pt;"> (van Oers et al., 2014; Stapley et al., 2008) </div>
 
@@ -251,6 +251,8 @@ ggplot(true_indel, aes(x=as.factor(freq), y=prop, fill=group)) +
 - variant calling with GATK
 - multispecies alignment between zebra finch, flycatcher and great tit
 - parsimony based polarisation
+
+![birds](align_birds.png)
 
 
 # The model - 'anavar'
@@ -272,13 +274,14 @@ ggplot(true_indel, aes(x=as.factor(freq), y=prop, fill=group)) +
 
 ## Regional variation in purifying selection
 
-```{r, echo=FALSE, warning=FALSE, message=FALSE}
+```{r, echo=FALSE, warning=FALSE, message=FALSE, fig.width=16, fig.height=9}
 
 library(ggplot2)
 library(dplyr)
 library(gridExtra)
 library(viridis)
 
+pal4 = viridis(n=5)
 ## divergence
 div = read.delim('~/parus_indel/summary_analyses/gt_indel_div.txt')
 snp_div = read.delim('~/parus_indel/summary_analyses/snp_div.txt', header=FALSE)
@@ -296,15 +299,15 @@ div$category = factor(div$category,
 
 div_plot = ggplot(div, aes(x=category, y=divergence, fill=variation)) +
     geom_bar(stat='identity', size=2, position = position_dodge(width=0.9)) +
-    theme_bw(base_size = 15) +
+    theme_bw(base_size=plot_base_size) +
     xlab('') + ylab('divergence') +
     theme(axis.text.x = element_text(angle = 45, hjust = 1),
     legend.title=element_blank(), legend.position='None',
     legend.background=element_blank()) +
     guides(colour = guide_legend(nrow = 1))+
-    annotate("text", x = 3.5, y = 0.0065,
-              label = '(SNPs: divergence x 10)', size=2.9) +
-    scale_fill_viridis(discrete=TRUE)
+    #annotate("text", x = 3.5, y = 0.0065,
+    #          label = '(SNPs: divergence = true divergence / 10)', size=6) +
+    scale_fill_manual(values=pal4)
 
 ## tajd
 summary_data = read.delim('~/parus_indel/summary_analyses/bgi10_stats.txt', na=0)
@@ -352,22 +355,24 @@ all_data[8,]$tw_per_site = NA
 # tajD
 tajd = ggplot(all_data, aes(x=category, y=tajD, fill=variation))+
   geom_bar(stat='identity', position = position_dodge(width=0.9), size = 2) +
-  theme_bw(base_size = 15) +
+  theme_bw(base_size=plot_base_size) +
   xlab('')  + ylab("Tajima's D") +
   #ylim(-1.3, -0.2) +
   theme(legend.title=element_blank(), legend.position=c(0.3, 0.25),
   axis.text.x=element_text(angle=45, hjust=1)) +
-  guides(fill=guide_legend(ncol=2))+ scale_fill_viridis(discrete=TRUE)
+  guides(fill=guide_legend(ncol=2))+ scale_fill_manual(values=pal4)
 
 grid.arrange(tajd, div_plot, nrow=1)
 
 ```
 
+For SNPs: divergence = divergence estimate / 10
+
 # Coding INDELs
 
 ## INDELs predominantly strongly deleterious
 
-```{R, echo=FALSE, warning=FALSE}
+```{R, echo=FALSE, warning=FALSE, fig.width=16, fig.height=9}
 library(ggthemes)
 
 pal = viridis(n=3)[1:3]
@@ -386,9 +391,9 @@ an_dat$mute_prop = an_dat$theta / an_dat$mute_total
 
 mute_plot =  ggplot(an_dat, aes(x=toupper(var_type), y=theta*1000, group=site_class, fill=toupper(var_type), label=paste(round(mute_prop*100), '%'))) + 
   geom_bar(stat='identity', position='dodge') +
-  theme_classic(base_size=15) + xlab('') +
+  theme_classic(base_size=plot_base_size) + xlab('') +
   scale_fill_manual(values=pal) +
-  geom_text(aes(y = theta*1000 + 0.02), position = position_dodge(0.9))+
+  geom_text(aes(y = theta*1000 + 0.02), position = position_dodge(0.9), size=8)+
   theme(legend.position = 'none', axis.text.x = element_blank()) +
   ylab(expression(theta * x *10^{-3}))
 
@@ -397,20 +402,20 @@ gamma_plot = ggplot(an_dat,
                         group=site_class, fill=toupper(var_type),
                         label=round(as.numeric(as.character(gamma)), 0))) + 
   geom_bar(stat='identity', position='dodge') +
-  theme_classic(base_size=15) +
+  theme_classic(base_size=plot_base_size) +
   scale_x_discrete(position = "top") + ylab(expression(gamma)) +
   theme(axis.text.x = element_blank(), axis.title.x = element_blank(),
         legend.position = 'none')+
   scale_fill_manual(values=pal) +
-  geom_text(aes(y = as.numeric(as.character(gamma)) - 50), position = position_dodge(0.9))
+  geom_text(aes(y = as.numeric(as.character(gamma)) - 50), position = position_dodge(0.9), size=8)
 
 alpha_plot = ggplot(an_dat, aes(x=var_type, y=alpha*100, 
                                 fill=var_type, 
                                 label=paste(round(as.numeric(as.character(alpha)), 2)*100, '%'))) +
   geom_bar(stat='identity', position='dodge') +
   geom_text(aes(y = as.numeric(as.character(alpha))*100 +5), 
-            position = position_dodge(0.9)) +
-  theme_classic(base_size=15) +
+            position = position_dodge(0.9), size=8) +
+  theme_classic(base_size=plot_base_size) +
   xlab('') + ylab(expression(alpha)) +
   theme(axis.text.x = element_blank(), legend.position = 'bottom', legend.title = element_blank())+
   scale_fill_manual(values=pal, labels=c('Deletions', 'Insertions')) +
@@ -440,7 +445,7 @@ grid.arrange(grid.arrange(mute_plot, gamma_plot, nrow=2), alpha_plot, nrow=1)
 
 ## Evidence for linked selection
 
-```{R, echo=FALSE, warning=FALSE, message=FALSE}
+```{R, echo=FALSE, warning=FALSE, message=FALSE, fig.width=16, fig.height=9}
 library(gtools)
 
 in_file = '~/parus_indel/gene_proximity_analyses/gt_nc_v_ar_2kb_wind_cds.results.csv'
@@ -455,13 +460,13 @@ prox_data$distance = as.numeric(prox_data$bin) * window_size
 ins_theta = subset(prox_data, sel_type == 'sel' & var_type == 'ins', select=c(bin, theta, distance))
 colnames(ins_theta) = c('bin', 'ins_theta', 'distance')
 
-#cor.test(as.numeric(ins_theta$ins_theta), ins_theta$distance, method='spearman', exact=NULL)
+theta_ins_test = cor.test(as.numeric(ins_theta$ins_theta), ins_theta$distance, method='spearman', exact=NULL)
 #length(ins_theta$distance)
 
 del_theta = subset(prox_data, sel_type == 'sel' & var_type == 'del', select=c(bin, theta, distance))
 colnames(del_theta) = c('bin', 'del_theta', 'distance')
 
-#cor.test(as.numeric(del_theta$del_theta), del_theta$distance, method='spearman', exact=NULL)
+theta_del_test = cor.test(as.numeric(del_theta$del_theta), del_theta$distance, method='spearman', exact=NULL)
 
 rdi_data = as.data.frame(cbind(ins_theta, del_theta$del_theta))
 rdi_data$rdi = rdi_data$del_theta / rdi_data$ins_theta
@@ -469,17 +474,59 @@ rdi_data$rdi = rdi_data$del_theta / rdi_data$ins_theta
 #cor.test(as.numeric(rdi_data$rdi), as.numeric(rdi_data$bin), method='spearman', exact=NULL)
 
 theta_plot = ggplot(subset(prox_data, sel_type=='sel'), aes(x=distance, y=theta*10000, colour=toupper(var_type))) +
-      geom_hline(yintercept=2.93, colour=pal[1], size=1, linetype=2) +
-      geom_hline(yintercept=1.7, colour=pal[2], size=1, linetype=2) +
-      geom_point(stat='identity', size = 2) +
-      theme_bw(base_size = 15) +
-      geom_smooth(method='lm', se=FALSE)+
+      geom_hline(yintercept=2.93, colour=pal[1], size=3, linetype=2) +
+      geom_hline(yintercept=1.7, colour=pal[2], size=3, linetype=2) +
+      geom_point(stat='identity', size = 7) +
+      theme_bw(base_size=plot_base_size) +
+      geom_smooth(method='lm', se=FALSE, size=3)+
       #xlim(0,10000)+
       ylab(expression(theta * x *10^-4))  + xlab('Distance from exons (kb)') +
       theme(legend.title = element_blank(), legend.position = c(0.15, 0.87), legend.background = element_blank()) +
+      scale_colour_manual(values=pal)+
+      ggtitle(paste('Ins: ', expression(rho), '=', round(theta_ins_test$estimate, digits=2),
+      'p < 0.05',
+      '\nDel: ', expression(rho), '=', round(theta_del_test$estimate, digits=2),
+      'p < 0.01'))
+
+
+# pi plot
+sum_file = read.delim('~/parus_indel/gene_proximity_analyses/gt_prox_summary_stats.txt')
+call_file = read.delim('~/parus_indel/gene_proximity_analyses/gt_prox_call.txt')
+
+all_data = cbind(sum_file, call_file)
+all_data[7] = NULL
+all_data[7] = NULL
+
+all_data$dist = as.numeric(sapply(strsplit(as.character(all_data$category), 'bin'), "[[", 2)) * 2
+
+all_data$pi_per_site = all_data$pi / all_data$callable
+
+ins_theta = subset(all_data, variation == 'INS', select=c(category, pi_per_site, dist))
+colnames(ins_theta) = c('bin', 'ins_theta', 'distance')
+
+theta_ins_test = cor.test(as.numeric(ins_theta$ins_theta), ins_theta$distance, method='spearman', exact=NULL)
+
+del_theta = subset(all_data, variation == 'DEL', select=c(category, pi_per_site, dist))
+colnames(del_theta) = c('bin', 'del_theta', 'distance')
+
+theta_del_test = cor.test(as.numeric(del_theta$del_theta), del_theta$distance, method='spearman', exact=NULL)
+
+pi_plot = ggplot(subset(all_data, variation!='SNP' & variation!='INDEL'), aes(x=dist, y=pi_per_site*10000, colour=variation)) +
+      geom_point(stat='identity', size = 7) +
+      geom_hline(yintercept=0.000165982911468325 * 10000, colour=pal[1], size=3, linetype=2) +
+      geom_hline(yintercept=0.000127925735552617 * 10000, colour=pal[2], size=3, linetype=2) +
+      theme_bw(base_size=plot_base_size) +
+      geom_smooth(method='lm', se=FALSE, size=3)+
+      #xlim(0,10000)+
+      ylab(expression(pi* x *10^-4))  + xlab('Distance from exons (kb)') +
+      theme(legend.position = 'none', legend.background = element_blank())+
+      ggtitle(paste('Ins: ', expression(rho), '=', round(theta_ins_test$estimate, digits=2),
+      'p < 0.01',
+      '\nDel: ', expression(rho), '=', round(theta_del_test$estimate, digits=2),
+      'p < 0.01')) +
       scale_colour_manual(values=pal)
 
-theta_plot
+grid.arrange(theta_plot, pi_plot, nrow=1)
 ```
 
 
@@ -505,9 +552,7 @@ theta_plot
 
 ## Getting the data - recombination rate
 
-```{r, echo=FALSE}
-library(gridExtra)
-library(ggplot2)
+```{r, echo=FALSE, fig.width=16, fig.height=9}
 
 # plotting recomb maps from linkage data
 recomb_data <- read.delim('/Users/henryjuho/genomics/GT_recomb/recomb_model_data.txt')
@@ -515,9 +560,9 @@ new_recomb_data <- na.omit(recomb_data)
 new_recomb_data <- new_recomb_data[grep('chr[[:digit:]]{1,2}$', new_recomb_data$CHR),]
 
 ggplot(subset(new_recomb_data, CHR=='chr5'), aes(x = POS/1000000, y = RECOMB)) +
-  geom_point() +
-  stat_smooth(method="lm", se=FALSE, fill=NA, formula=y ~ poly(x, 3, raw=TRUE)) +
-  theme_bw(base_size = 20) +
+  geom_point(size=7) +
+  stat_smooth(method="lm", se=FALSE, fill=NA, formula=y ~ poly(x, 3, raw=TRUE), size=3) +
+  theme_bw(base_size=plot_base_size) +
   labs(x='Physical position (Mb)', y='cM position')
 ```
 
@@ -543,13 +588,21 @@ ggplot(subset(new_recomb_data, CHR=='chr5'), aes(x = POS/1000000, y = RECOMB)) +
 
 ## Association between diversity and recombination
 
-```{R, echo=FALSE, warning=FALSE}
+```{R, echo=FALSE, warning=FALSE, message=FALSE, fig.width=16, fig.height=9}
 library(reshape2)
 # summary stat results
 window_data = read.delim('~/parus_indel/recombination_analyses/filtered_2Mb_windows.txt')
 
 #cor.test(window_data$tajd_ins, window_data$rec_rate, method='spearman', exact=NULL)
 #cor.test(window_data$tajd_del, window_data$rec_rate, method='spearman', exact=NULL)
+
+theta_ins_test = cor.test(window_data$theta_ins, window_data$rec_rate, method='spearman', exact=NULL)
+tajd_ins_test = cor.test(window_data$tajd_ins, window_data$rec_rate, method='spearman', exact=NULL)
+pi_ins_test = cor.test(window_data$pi_ins, window_data$rec_rate, method='spearman', exact=NULL)
+
+theta_del_test = cor.test(window_data$theta_del, window_data$rec_rate, method='spearman', exact=NULL)
+tajd_del_test = cor.test(window_data$tajd_del, window_data$rec_rate, method='spearman', exact=NULL)
+pi_del_test = cor.test(window_data$pi_del, window_data$rec_rate, method='spearman', exact=NULL)
 
 # rdi data
 rdi_data = subset(window_data, select=c(window, rec_rate, theta_ins, theta_del))
@@ -567,12 +620,16 @@ pi_data = melt(pi_data, id=c('window', 'rec_rate'))
 pi_data$variable = factor(pi_data$variable, levels=c('del', 'ins'))
 
 pi_plot = ggplot(pi_data, aes(x=log(rec_rate + 1), y=value*10000, colour=toupper(variable))) +
-      geom_point(stat='identity', size = 2) +
-      geom_smooth(method='lm', se=FALSE) +
-      theme_bw() +
+      geom_point(stat='identity', size = 7) +
+      geom_smooth(method='lm', se=FALSE, size=3) +
+      theme_bw(base_size=plot_base_size) +
       xlab('Recombination rate (log)')  + ylab(expression(pi * x *10^-4)) +
-      theme(legend.position = 'none', plot.title=element_text(hjust=-0.2, vjust=-3)) +
-      scale_colour_manual(values=pal)
+      theme(legend.position = 'none') +
+      scale_colour_manual(values=pal) +
+      ggtitle(paste('Ins: ', expression(rho), '=', round(pi_ins_test$estimate, digits=2),
+      'p < 0.05',
+      '\nDel: ', expression(rho), '=', round(pi_del_test$estimate, digits=2),
+      'p < 0.01'))
 
 
 # tajd plot
@@ -582,13 +639,16 @@ tajd_data = melt(tajd_data, id=c('window', 'rec_rate'))
 tajd_data$variable = factor(tajd_data$variable, levels=c('del', 'ins'))
 
 tajd_plot = ggplot(tajd_data, aes(x=log(rec_rate + 1), y=value, colour=toupper(variable))) +
-      geom_point(stat='identity', size = 2) +
-      geom_smooth(method='lm', se=FALSE) +
-      theme_bw() +
+      geom_point(stat='identity', size = 7) +
+      geom_smooth(method='lm', se=FALSE, size=3) +
+      theme_bw(base_size=plot_base_size) +
       xlab('Recombination rate (log)')  + ylab("Tajima's D") +
-      theme(legend.position=c(0.85, 0.15), legend.title=element_blank(), legend.background=element_blank(),
-      plot.title=element_text(hjust=-0.3, vjust=-3))+
-      scale_colour_manual(values=pal)
+      theme(legend.position=c(0.85, 0.15), legend.title=element_blank(), legend.background=element_blank())+
+      scale_colour_manual(values=pal) +
+      ggtitle(paste('Ins: ', expression(rho), '=', round(tajd_ins_test$estimate, digits=2),
+      'p < 0.01',
+      '\nDel: ', expression(rho), '=', round(tajd_del_test$estimate, digits=2),
+      'p < 0.01'))
 
 grid.arrange(pi_plot, tajd_plot, nrow=1)
 
@@ -599,14 +659,14 @@ grid.arrange(pi_plot, tajd_plot, nrow=1)
 window_data2 = read.delim('~/parus_indel/recombination_analyses/filtered_2Mb_windows_percentpol.txt')
 window_data2 = subset(window_data2, pol_success > 0.6)
 
-cor.test(window_data2$tajd_ins, window_data2$rec_rate, method='spearman', exact=NULL)
-cor.test(window_data2$tajd_del, window_data2$rec_rate, method='spearman', exact=NULL)
+#cor.test(window_data2$tajd_ins, window_data2$rec_rate, method='spearman', exact=NULL)
+#cor.test(window_data2$tajd_del, window_data2$rec_rate, method='spearman', exact=NULL)
 
 # rdi plot
 rdi_data2 = subset(window_data2, select=c(window, rec_rate, theta_ins, theta_del))
 colnames(rdi_data2) = c('window', 'rec_rate', 'ins', 'del')
 rdi_data2$rdi = rdi_data2$del / rdi_data2$ins
-cor.test(rdi_data2$rdi, rdi_data2$rec_rate, method='spearman', exact=NULL)
+#cor.test(rdi_data2$rdi, rdi_data2$rec_rate, method='spearman', exact=NULL)
 rdi_data2$filter = '60% min polarised'
 
 rdi_all = rbind(rdi_data, rdi_data2)
@@ -659,14 +719,15 @@ tajd_plot2 = ggplot(tajd_data2, aes(x=log(rec_rate + 1), y=value, colour=toupper
 
 ## Conclusion
 
-* INDELs in genes are bad
-* Don't find a link between recombination rate and deletion bias
-* Linked selection appears to be constraining INDEL rates
+* INDELs in genes mostly extremely deleterious - 96%
+* Remainder are weakly deletrious - deletions more so
+* $\alpha$ estimate at 71% and 86% for insertions and deletions 
+* Regions adjacent to exons have reduced INDEL diversity - genetic hitch-hiking
+* Extends over relatively large distance 0-100kb
+* Also areas of low recombination show reduced diversity
 
 ## Next steps
 
-* Calculate alpha - proportion of substitutions fixed by positive selection
-* Separate UCNE and CDS in linked selection analysis
-* Any suggestions?
+* Intersting to investigate if reduced diversity is is due to postive selection or purrifying selection
 
 # Questions?
