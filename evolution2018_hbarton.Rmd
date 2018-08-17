@@ -39,8 +39,10 @@ plot_base_size = 30
 ## Insertions and deletions
 
 - short INDELs: sections of DNA < 50bp that are deleted or inserted in a genome
+<!--
 - deletion bias in most organisms
 - deletions more deleterious than insertions
+-->
 
 \  
 
@@ -64,13 +66,15 @@ plot_base_size = 30
 
 ## The importance of INDELs in genome evolution
 
+* Contribute more to sequence divergence, in terms of the number of base differences, than SNPs  
+
 * Influence genome size:
     * low deletion rate $\rightarrow$ large genomes?
     * high deletion rate $\rightarrow$ compact genomes?
-    * selection on insertions to maintain minimum intron size?
-  
-* Contribute more to sequence divergence, in terms of the number of base differences, than SNPs  
 
+* Selection on insertions to maintain minimum intron size?
+  
+* Picture is complicated by errors identifying ancestral states
 
 \   
 \  
@@ -79,6 +83,7 @@ plot_base_size = 30
 
 <div style="position:absolute;bottom:4%;left:5%;width:900px;font-size:11pt;"> (Britten, 2002; Leushkin and Bazykin, 2013; Nam and Ellegren, 2012; Ometto et al., 2005; Sun et al., 2012) </div>
 
+<!--
 
 ## INDEL mutation
 
@@ -97,7 +102,9 @@ plot_base_size = 30
     * biased gene conversion
     * minimum intron size
     * polarisation error
-    
+  
+-->
+
 ## Importance of polarisation error
 
 ```{R, echo=FALSE, warning=FALSE, fig.width=16, fig.height=9}
@@ -262,11 +269,48 @@ Quantify how natural selection shapes INDEL diversity in the great tit (*Parus m
   * takes the unfolded site frequency spectrum
   * estimates for both insertions and deletions:
     * mutation rate ($\theta = 4N_e\mu$)
-    * selection:
-        * either selection coefficient ($\gamma = 4N_es$)
-        * or scale and shape paramater for distribution of fitness effects
+    * the distribution of fitness effects (DFE)
     * polarisation error
   * Controls for demography using neutral sites (Eyre-Walker et al., 2006)
+  * Applicable to both INDELs and SNPs or a combination
+
+<div style="position:absolute;bottom:4%;left:5%;width:450px;font-size:11pt;"> (Barton and Zeng, 2018) </div>
+
+## the model DFEs
+
+<!---
+```{r, echo=FALSE, warning=FALSE, message=FALSE, fig.width=16, fig.height=9}
+library(viridis)
+
+
+discrete_g = data.frame(gamma=c(-8, -0.5, -5, -0.5), var_type=c('DEL','DEL', 'INS', 'INS'), theta=c(0.002, 0.0002, 0.001, 0.0001), s_class=c(1,2,1,2))
+
+discrete_plot = ggplot(discrete_g, aes(x=theta, y=gamma, fill=var_type)) +
+  geom_bar(stat='identity', position='dodge') +
+  scale_fill_manual(values = viridis(n=3)) +
+  theme_bw(base_size = plot_base_size) +
+  ylab(expression(gamma)) + xlab('Class') +
+  theme(legend.position = 'none') + ggtitle('Discrete DFE')
+
+#gdistdel <- density(rgamma(100000, shape = 0.5, rate = 500))
+#delg <- data.frame(gamma = gdistdel$x, theta = gdistdel$y, var_type='DEL')
+#gdistins <- density(rgamma(100000, shape = 0.5, rate = 100))
+#insg <- data.frame(gamma = gdistins$x, theta = gdistins$y, var_type='INS')
+
+delg <- data.frame(gamma = c(-8:0), theta = c(3^(9:1)), var_type='DEL')
+insg <- data.frame(gamma = c(-8:0/0.8), theta = c(3^(9:1)), var_type='INS')
+
+continuous_g = subset(rbind(insg, delg))
+
+ggplot(continuous_g, aes(x=theta, y=gamma, colour=var_type)) +
+  geom_line(stat='identity') +
+  theme_bw(base_size = plot_base_size) +
+  scale_colour_manual(values = viridis(n=3))
+
+
+
+```
+-->
 
 <div style="position:absolute;bottom:4%;left:5%;width:450px;font-size:11pt;"> (Barton and Zeng, 2018) </div>
 
@@ -276,12 +320,8 @@ Quantify how natural selection shapes INDEL diversity in the great tit (*Parus m
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE, fig.width=16, fig.height=9}
 
-library(ggplot2)
-library(dplyr)
-library(gridExtra)
-library(viridis)
-
 pal4 = viridis(n=5)
+
 ## divergence
 div = read.delim('~/parus_indel/summary_analyses/gt_indel_div.txt')
 snp_div = read.delim('~/parus_indel/summary_analyses/snp_div.txt', header=FALSE)
@@ -370,7 +410,7 @@ For SNPs: divergence = divergence estimate / 10
 
 # Coding INDELs
 
-## INDELs predominantly strongly deleterious
+## Polymorphic INDELs predominantly strongly deleterious
 
 ```{R, echo=FALSE, warning=FALSE, fig.width=16, fig.height=9}
 library(ggthemes)
@@ -722,12 +762,18 @@ tajd_plot2 = ggplot(tajd_data2, aes(x=log(rec_rate + 1), y=value, colour=toupper
 * INDELs in genes mostly extremely deleterious - 96%
 * Remainder are weakly deletrious - deletions more so
 * $\alpha$ estimate at 71% and 86% for insertions and deletions 
-* Regions adjacent to exons have reduced INDEL diversity - genetic hitch-hiking
+* Regions adjacent to exons, and areas of low recombination, have reduced INDEL diversity - genetic hitch-hiking
 * Extends over relatively large distance 0-100kb
-* Also areas of low recombination show reduced diversity
 
 ## Next steps
 
-* Intersting to investigate if reduced diversity is is due to postive selection or purrifying selection
+* Intersting to investigate if reduced diversity is is due to postive selection or purifying selection
+* Look at whether efficacy of selection on INDELs is higher in regions with higher $N_e$
+
+## Plug for the model
+
+* User friendly computer package - anavar
+* <http://zeng-lab.group.shef.ac.uk>
+* Methods are applicable to both INDELs and SNPs or a combination
 
 # Questions?
