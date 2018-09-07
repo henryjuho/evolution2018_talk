@@ -321,7 +321,7 @@ grid.arrange(discrete_plot, continuous_plot, nrow=1)
 ```
 
 
-<div style="position:absolute;bottom:4%;left:5%;width:450px;font-size:11pt;"> (Barton and Zeng, 2018) </div>
+<div style="position:absolute;bottom:4%;left:5%;width:450px;font-size:11pt;"> (Barton and Zeng, MBE, 2018) </div>
 
 # Dataset summary
 
@@ -337,7 +337,7 @@ snp_div = read.delim('~/parus_indel/summary_analyses/snp_div.txt', header=FALSE)
 snp_div$variation = 'SNP'
 snp_div = data.frame(cbind(as.character(snp_div$V1),snp_div$variation, snp_div$V2))
 colnames(snp_div) = c('category', 'variation', 'divergence')
-snp_div$divergence = as.numeric(as.character(snp_div$divergence))/10
+snp_div$divergence = as.numeric(as.character(snp_div$divergence))#/10
 
 div = subset(div, category!='noncoding' & category != 'UCNE' & category != 'ALL')
 div = subset(div, select=c(category, variation, divergence))
@@ -416,7 +416,6 @@ grid.arrange(tajd, div_plot, nrow=1)
 
 ```
 
-For SNPs: divergence = divergence estimate / 10
 
 # Coding INDELs
 
@@ -495,7 +494,7 @@ grid.arrange(grid.arrange(mute_plot, gamma_plot, nrow=2), alpha_plot, nrow=1)
 
 ## Evidence for linked selection
 
-```{R, echo=FALSE, warning=FALSE, message=FALSE, fig.width=16, fig.height=9}
+```{R, echo=FALSE, warning=FALSE, message=FALSE, fig.width=9, fig.height=9, fig.align='center'}
 library(gtools)
 
 in_file = '~/parus_indel/gene_proximity_analyses/gt_nc_v_ar_2kb_wind_cds.results.csv'
@@ -576,7 +575,8 @@ pi_plot = ggplot(subset(all_data, variation!='SNP' & variation!='INDEL'), aes(x=
       'p < 0.01')) +
       scale_colour_manual(values=pal)
 
-grid.arrange(theta_plot, pi_plot, nrow=1)
+#grid.arrange(theta_plot, pi_plot, nrow=1)
+theta_plot
 ```
 
 
